@@ -89,7 +89,7 @@ class UserService
         return array(
             'username' => $oidcUser->getPreferredUsername(),
             'user_email' => $oidcUser->getEmail(),
-            'user_email' => phpbb_email_hash($oidcUser->getEmail()),
+            //'user_email' => phpbb_email_hash($oidcUser->getEmail()),
             'group_id' => (int) $row['group_id'],
             'user_type' => USER_NORMAL,
             'user_new' => ($this->config['new_member_post_limit']) ? 1 : 0
@@ -109,7 +109,7 @@ class UserService
         /* *phpbb_validate_email returns false if the e-mail is validated */
         if(isset($email) && !phpbb_validate_email($email)){
             $userData['user_email'] = $email;
-            $userData['user_email_hash'] = phpbb_email_hash($email);
+            //$userData['user_email_hash'] = phpbb_email_hash($email);
         }
         $birthdate = $oidcUser->getBirthdate();
         if(isset($birthdate) && validate_date($birthdate)){

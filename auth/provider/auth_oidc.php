@@ -171,7 +171,7 @@ class auth_oidc extends \phpbb\auth\provider\base
 	    if ($this->dbg()) echo " called page: $page";
 	    $mode=$_GET['mode'];
 	    $ucp_login= false; //($mode=='login'); //TODO consider all pages with mode=login parameter as login page
-	    $callback_oidc=$_GET['state'] && $_GET['session_state'] && $_GET['code']; //TODO the callback from keycloak to phpbb with login information
+	    $callback_oidc=$_GET['state'] && $_GET['code']; //TODO the callback from keycloak to phpbb with login information
 	    $called_getLogin=($this->workaroundLogout);
 	    if ($this->dbg()) echo " called get_login= $called_getLogin";
 	    return ($ucp_login || $callback_oidc || $called_getLogin);
