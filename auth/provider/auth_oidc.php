@@ -22,6 +22,7 @@ class auth_oidc extends \phpbb\auth\provider\base
     private $redirectUrl;
     private $workaroundRed;
     private $workaroundLogout;
+	private $acpLogin;
 
     /**
      * OIDC Authentication Constructor
@@ -66,6 +67,8 @@ class auth_oidc extends \phpbb\auth\provider\base
 	//$this->workaroundRed = 'workaround';//$this->redirectUrl."/workaround";
 	$red = $this->oidc->getRedirectUrl();
 	if ($this->dbg()) echo "\n final redirect: $red";
+	//Check if we're in the ACP
+	$this->acpLogin = strstr($_SERVER['REQUEST_URI'], "adm");
     }
 
     /**
@@ -103,7 +106,7 @@ class auth_oidc extends \phpbb\auth\provider\base
 	 }
 	 $login_called = $_GET['login'];
        
-	 if ($this->passToOidc())
+	 if ($this->passToOidc() && !$this->acpLogin)
 	 {
 		 $this->workaroundLogout = false;
 		 return $this->oidcLogin();
