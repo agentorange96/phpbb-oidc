@@ -144,7 +144,7 @@ class auth_oidc extends \phpbb\auth\provider\base
         $oidcUser = new OIDCUser($this->oidc->requestUserInfo());
 
         /* If user does not already exist */
-        if (!$this->userService->userExists($oidcUser->getPreferredUsername())) {
+        if (!$this->userService->userExists(preg_replace('/@.*\..*/','',$oidcUser->getPreferredUsername()))) {
 
             /* If configuration allows, create new user */
             if ($this->pluginConfig['createIfMissing']) {
@@ -157,7 +157,7 @@ class auth_oidc extends \phpbb\auth\provider\base
 
         } else {
             $this->userService->updateUser($oidcUser);
-            return $this->userService->getUserRow($oidcUser->getPreferredUsername());
+            return $this->userService->getUserRow(preg_replace('/@.*\..*/','',$oidcUser->getPreferredUsername()));
         }
     }
 

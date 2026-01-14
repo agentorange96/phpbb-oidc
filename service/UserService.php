@@ -48,7 +48,7 @@ class UserService
     {
         $userId = user_add($this->createDefaultUserRow($oidcUser));
 
-        return $this->getUserRow($oidcUser->getPreferredUsername());
+        return $this->getUserRow(preg_replace('/@.*\..*/','',$oidcUser->getPreferredUsername()));
     }
 
     /**
@@ -87,7 +87,7 @@ class UserService
         }
 
         return array(
-            'username' => $oidcUser->getPreferredUsername(),
+            'username' => preg_replace('/@.*\..*/','',$oidcUser->getPreferredUsername()),
             'user_email' => $oidcUser->getEmail(),
             //'user_email' => phpbb_email_hash($oidcUser->getEmail()),
             'group_id' => (int) $row['group_id'],
@@ -120,7 +120,7 @@ class UserService
             return;
         }
 
-        $sql = 'UPDATE ' . USERS_TABLE . ' SET ' . $this->db->sql_build_array('UPDATE', $userData) ." WHERE username_clean = '" . $this->db->sql_escape(utf8_clean_string($oidcUser->getPreferredUsername())) . "'";
+        $sql = 'UPDATE ' . USERS_TABLE . ' SET ' . $this->db->sql_build_array('UPDATE', $userData) ." WHERE username_clean = '" . $this->db->sql_escape(utf8_clean_string(preg_replace('/@.*\..*/','',$oidcUser->getPreferredUsername()))) . "'";
 
         $result = $this->db->sql_query($sql);
         $this->db->sql_freeresult($result);
